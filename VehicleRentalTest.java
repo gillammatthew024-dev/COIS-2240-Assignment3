@@ -4,10 +4,14 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor; 
+
+import java.lang.reflect.Modifier; 
+
 class VehicleRentalTest {
 
 	@Test
-	public void testLicensePlate() throws IllegalArgumentException{
+	public void testLicensePlate() {
 		Car car = new Car("Ford", "Focus", 2021, 4);
 		String plate1 = "AAA100";
 		car.setLicensePlate(plate1);
@@ -59,7 +63,14 @@ class VehicleRentalTest {
 		assertTrue(rented);
 		assertTrue(Vehicle.VehicleStatus.valueOf("Available").equals(status));
 		assertFalse(rentalSystem.returnVehicle(car, customer, date, 0)); 
+	}
+	@Test
+	public void testSingletonRentalSystem() throws Exception
+	{
+		Constructor<RentalSystem> constructor = RentalSystem.class.getDeclaredConstructor(); 
 		
+		assertTrue(constructor.getModifiers() == Modifier.PRIVATE);
+		assertTrue(RentalSystem.getInstance() != null);
 		
 	}
 
