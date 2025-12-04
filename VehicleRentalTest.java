@@ -1,5 +1,7 @@
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.Test;
 
 class VehicleRentalTest {
@@ -36,6 +38,28 @@ class VehicleRentalTest {
 			car.setLicensePlate(plate7);
 		});
 		assertFalse(car.getLicensePlate().equals(plate7));
+		
+	}
+	@Test
+	public void testRentandReturnVehicle() 
+	{
+		Car car = new Car("Ford", "Focus", 2021, 4);
+		Customer customer = new Customer(1, "Matt Gillam");
+		Vehicle.VehicleStatus status = car.getStatus();
+		assertTrue(Vehicle.VehicleStatus.valueOf("Available").equals(status));
+		RentalSystem rentalSystem = RentalSystem.getInstance(); 
+		LocalDate date = LocalDate.now(); 
+		boolean rented = rentalSystem.rentVehicle(car, customer, date, 69420);
+		status = car.getStatus();
+		assertTrue(rented);
+		assertTrue(Vehicle.VehicleStatus.valueOf("Rented").equals(status));
+		date = LocalDate.now(); //slightly later date for slightly better realism lol, the vehicle was held for like 2 ms
+		rentalSystem.returnVehicle(car, customer, date, 0); 
+		status = car.getStatus();
+		assertTrue(rented);
+		assertTrue(Vehicle.VehicleStatus.valueOf("Available").equals(status));
+		assertFalse(rentalSystem.returnVehicle(car, customer, date, 0)); 
+		
 		
 	}
 
