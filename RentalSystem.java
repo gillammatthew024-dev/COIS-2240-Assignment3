@@ -81,7 +81,6 @@ public class RentalSystem {
     		String[] fields;
     		while ((line = vehicleReader.readLine()) != null) 
     		{
-    			System.out.println(line);
     			String[] properties = line.split(" \\| "); 
     			if (properties[0].equals("Car")) 
     			{
@@ -136,7 +135,6 @@ public class RentalSystem {
     			}
     			else if (properties[0].equals("PickUpTruck")) 
     			{
-    				System.out.println("Here");
     				fields = new String[7];
     				for (int i = 1; i < properties.length; i++) 
     				{
@@ -235,7 +233,7 @@ public class RentalSystem {
     }catch(IOException e) {}
     }
     public boolean addVehicle(Vehicle vehicle) {
-    	if (findVehicleByPlate(vehicle.getLicensePlate()) == null) 
+    	if (findVehicleByPlate(vehicle.getLicensePlate()) != null) 
     	{
     		System.out.println("vehicle with this license plate already exists in system");
     		return false;
@@ -246,7 +244,7 @@ public class RentalSystem {
     }
 
     public boolean addCustomer(Customer customer) {
-    	if (findCustomerByName(customer.getCustomerName()) == null)
+    	if (findCustomerByName(customer.getCustomerName()) != null)
     	{
     		System.out.println("Customer with this name already exists");
     		return false;
