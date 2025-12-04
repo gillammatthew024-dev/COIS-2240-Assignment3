@@ -63,7 +63,7 @@ public class RentalSystem {
     }
     private void saveRecord(RentalRecord record)
     {
-    	try (FileWriter writer = new FileWriter("rentalrecord.txt", true)) 
+    	try (FileWriter writer = new FileWriter("rentalrecords.txt", true)) 
     	{
     		writer.write(record.toString() + " | " + record.getRecordType() + "\n");
     		writer.close();
@@ -158,7 +158,6 @@ public class RentalSystem {
     					else 
     						fields[i-1] = properties[i]; 
     				}
-    				System.out.println(Arrays.toString(properties));
     				
     				boolean has_trailer = fields[6].equals("YES") ? true : false; 
     				PickupTruck newCar = new PickupTruck(fields[1], fields[2], Integer.parseInt(fields[3]), Double.parseDouble(fields[5]), has_trailer); 
@@ -206,7 +205,7 @@ public class RentalSystem {
     	}
     }catch(IOException e) {}
     	
-    try (BufferedReader reader = new BufferedReader(new FileReader("rentalrecord.txt"))) 
+    try (BufferedReader reader = new BufferedReader(new FileReader("rentalrecords.txt"))) 
     {
     	String line;
     	String[] properties;
@@ -219,7 +218,6 @@ public class RentalSystem {
     	while ((line = reader.readLine()) != null) 
     	{
     		properties = line.split(" \\| ");
-    		System.out.println(Arrays.toString(properties));
     		lplate = properties[1].split(": ")[1]; 
     		vehicle = findVehicleByPlate(lplate);
     		customer = findCustomerByName(properties[2].split(": ")[1]); 
@@ -236,14 +234,26 @@ public class RentalSystem {
     	}
     }catch(IOException e) {}
     }
-    public void addVehicle(Vehicle vehicle) {
+    public boolean addVehicle(Vehicle vehicle) {
+    	if (findVehicleByPlate(vehicle.getLicensePlate()) == null) 
+    	{
+    		System.out.println("vehicle with this license plate already exists in system");
+    		return false;
+    	}
         vehicles.add(vehicle);
         saveVehicle(vehicle);
+        return true;
     }
 
-    public void addCustomer(Customer customer) {
+    public boolean addCustomer(Customer customer) {
+    	if (findCustomerByName(customer.getCustomerName()) == null)
+    	{
+    		System.out.println("Customer with this name already exists");
+    		return false;
+    	}
         customers.add(customer);
         saveCustomer(customer);
+        return true;
     }
 
     public void rentVehicle(Vehicle vehicle, Customer customer, LocalDate date, double amount) {

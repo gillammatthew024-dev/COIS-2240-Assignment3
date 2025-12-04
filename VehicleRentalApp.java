@@ -94,10 +94,10 @@ public class VehicleRentalApp {
                     System.out.print("Enter rental amount: ");
                     double rentAmount = scanner.nextDouble();
                     scanner.nextLine();
-
                     Vehicle vehicleToRent = rentalSystem.findVehicleByPlate(rentPlate);
+                    System.out.println(vehicleToRent.getInfo());
                     Customer customerToRent = rentalSystem.findCustomerById(cidRent);
-
+                    System.out.println(customerToRent.toString());
                     if (vehicleToRent == null || customerToRent == null) {
                         System.out.println("Vehicle or customer not found.");
                         break;
